@@ -1,4 +1,7 @@
-import UserInfo from "./components/UserList";
+import UserOne from "./components/userOne";
+import UserTwo from "./components/userTwo";
+import UserThree from "./components/userThree";
+// import Account from "./components/userOne"
 
 function App() {
   return (
@@ -6,7 +9,10 @@ function App() {
       <header className="App-header">
         <p>Listagem de usuários</p>
       </header>
-      <UserInfo />
+      <UserOne />
+      <UserTwo />
+      <UserThree />
+      {/* <Account /> */}
     </div>
   );
 }
