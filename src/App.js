@@ -1,7 +1,6 @@
 import UserOne from "./components/userOne";
 import UserTwo from "./components/userTwo";
 import UserThree from "./components/userThree";
-// import Account from "./components/userOne"
 
 function App() {
   return (
@@ -12,7 +11,6 @@ function App() {
       <UserOne />
       <UserTwo />
       <UserThree />
-      {/* <Account /> */}
     </div>
   );
 }
