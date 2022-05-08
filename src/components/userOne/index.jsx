@@ -7,11 +7,11 @@ export default class UserOne extends Component {
 
     // Ver se tem uma forma de criar esse constructor a parte e chamá-lo (importar) só pra aplicar this.props ou this.state.
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            avatarUrl:'https://via.placeholder.com/100',
+            img:'https://via.placeholder.com/100',
             name: 'Sarah Rúbia de Oliveira Santos',
             id: 'X',
             username: '@sarahrubia',
@@ -23,7 +23,7 @@ export default class UserOne extends Component {
         return (
             <>
                 <img className='Avatar' 
-                src={this.state.avatarUrl}
+                src={this.state.img}
                 alt={this.state.name} 
                 />
         

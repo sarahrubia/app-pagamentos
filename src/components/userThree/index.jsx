@@ -9,7 +9,7 @@ export default class UserThree extends Component {
         super();
 
         this.state = {
-            avatarUrl:'https://via.placeholder.com/100',
+            img:'https://via.placeholder.com/100',
             name: 'Raquel Regina',
             id: 'Z',
             username: '@raquelregina',
@@ -21,7 +21,7 @@ export default class UserThree extends Component {
         return (
             <>
                 <img className='Avatar' 
-                src={this.state.avatarUrl}
+                src={this.state.img}
                 alt={this.state.name} 
                 />
         

@@ -9,7 +9,7 @@ export default class UserTwo extends Component {
         super();
 
         this.state = {
-            avatarUrl:'https://via.placeholder.com/100',
+            img:'https://via.placeholder.com/100',
             name: 'Isadora Cardoso Pereira da Silva',
             id: 'Y',
             username: '@isadoracardoso',
@@ -21,7 +21,7 @@ export default class UserTwo extends Component {
         return (
             <>
                 <img className='Avatar' 
-                src={this.state.avatarUrl}
+                src={this.state.img}
                 alt={this.state.name} 
                 />
         
