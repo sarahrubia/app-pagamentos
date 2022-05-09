@@ -24,33 +24,33 @@ export default class UserList extends Component {
     render () {
         return (
             <>
-              {this.state.data.map(user => {
+            {this.state.data.map(user => {
                 return (
-            <>
-              <div>Listagem de usuários</div>
-              <img className='Avatar' 
-              src={user.img}
-              alt="" 
-              />
-      
-              <div className='UserInfo'>
-                  <p className='UserInfo-name'>
-                      {user.name}
-                  </p>
-                  <div className='UserIdentifier'>
-                      <p className='UserInfo-id'>
-                          {user.id}
-                      </p>
-                      <p className='UserInfo-username'>
-                          {user.username}
-                      </p>
-                  </div>
-              </div>
-              <BotaoPagar />
-              </>
-        )
+                    <>
+                    <div>Listagem de usuários</div>
+                    <img className='Avatar' 
+                    src={user.img}
+                    alt="" 
+                    />
+            
+                    <div className='UserInfo'>
+                        <p className='UserInfo-name'>
+                            {user.name}
+                        </p>
+                        <div className='UserIdentifier'>
+                            <p className='UserInfo-id'>
+                                {user.id}
+                            </p>
+                            <p className='UserInfo-username'>
+                                {user.username}
+                            </p>
+                        </div>
+                    </div>
+                    <BotaoPagar />
+                    </>
+                )
 
-              })}
+            })}
             </>
         )
 
