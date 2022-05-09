@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import BotaoPagar from "./BotaoPagar"
 
 export default class UserList extends Component {
 
@@ -12,22 +13,46 @@ export default class UserList extends Component {
       const api = 'https://www.mocky.io/v2/5d531c4f2e0000620081ddce'
     
       const response = await fetch(api)
-      console.log("res ", response);     
+      // console.log("res ", response);     
     
       const body = await response.json();
-      console.log("body ", body);
+      // console.log("body ", body);
 
       this.setState({data: body})
-    //   Para pegar um dado específico de um usuário:
-    //   this.setState({data: body[0]['img']})
     }
 
     render () {
         return (
             <>
-                <div>Listagem de usuários</div>
-                <span>{JSON.stringify(this.state.data)}</span>
+              {this.state.data.map(user => {
+                return (
+            <>
+              <div>Listagem de usuários</div>
+              <img className='Avatar' 
+              src={user.img}
+              alt="" 
+              />
+      
+              <div className='UserInfo'>
+                  <p className='UserInfo-name'>
+                      {user.name}
+                  </p>
+                  <div className='UserIdentifier'>
+                      <p className='UserInfo-id'>
+                          {user.id}
+                      </p>
+                      <p className='UserInfo-username'>
+                          {user.username}
+                      </p>
+                  </div>
+              </div>
+              <BotaoPagar />
+              </>
+        )
+
+              })}
             </>
         )
+
     }
 }
