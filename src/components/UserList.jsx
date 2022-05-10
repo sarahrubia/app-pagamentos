@@ -40,6 +40,7 @@ padding: 0;
 
 const Button = styled.button`
 margin-right: 0;
+cursor: pointer;
 `
 
 export default class UserList extends Component {
