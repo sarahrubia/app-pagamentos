@@ -14,6 +14,7 @@ const PaymentModal = ({ id = "PaymentModal", onClose = () => {} }) => {
       <div className="Content">
         Pagamento para nome do usuários
         <input type="text" placeholder="R$ 0,00"></input>
+        <input type="text" placeholder="Cartão com final"></input>
       </div>
     </div>
   );

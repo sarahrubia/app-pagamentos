@@ -7,22 +7,19 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export default function PaymentButton () {
+export default function PaymentButton() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    
-    return (
-        <>
-        <Button className="Botao-pagar" onClick={() => setIsModalVisible(true)}>
+  return (
+    <>
+      <Button className="Botao-pagar" onClick={() => setIsModalVisible(true)}>
         Pagar
-        </Button>
-        {
-        isModalVisible ? (
-            <PaymentModal onClose={() => setIsModalVisible(false)}>
-            <header>Pagamento para nome do usuário</header>
-            </PaymentModal>
-        ) : null}
-        </>
-    )
-
+      </Button>
+      {isModalVisible ? (
+        <PaymentModal onClose={() => setIsModalVisible(false)}>
+          <header>Pagamento para nome do usuário</header>
+        </PaymentModal>
+      ) : null}
+    </>
+  );
 }
