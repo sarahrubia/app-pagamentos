@@ -1,4 +1,5 @@
 import React from "react";
+// import TesteModal from "./ReactModal";
 
 const PaymentModal = ({ id = "PaymentModal", onClose = () => {} }) => {
   const handleOutsideClick = (e) => {
@@ -11,11 +12,12 @@ const PaymentModal = ({ id = "PaymentModal", onClose = () => {} }) => {
       <button className="close" onClick={onClose}>
         x
       </button>
-      <div className="Content">
+      {/* <TesteModal /> */}
+      {/* <div className="Content">
         Pagamento para nome do usuários
         <input type="text" placeholder="R$ 0,00"></input>
         <input type="text" placeholder="Cartão com final"></input>
-      </div>
+      </div> */}
     </div>
   );
 };

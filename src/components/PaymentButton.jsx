@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import PaymentModal from "./Modal_Payment";
+// import PaymentModal from "./Modal_Payment";
+import PaymentModal from "./PaymentModal";
 
 const Button = styled.button`
   margin-right: 0;
