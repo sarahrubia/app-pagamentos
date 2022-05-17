@@ -1,5 +1,5 @@
 import UserList from "./components/UserList";
-// import ReactModal from "react-modal"
+import PaymentModal from "./components/PaymentModal";
 
 function App() {
   return (
@@ -7,6 +7,7 @@ function App() {
       <div className="App">
         <header className="App-header"></header>
         <UserList />
+        <PaymentModal />
       </div>
     </>
   );

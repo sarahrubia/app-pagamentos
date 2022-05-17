@@ -1,8 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import PaymentButton from "./PaymentButton";
-// import IUser from "../interfaces/"
+import PaymentModal from "./PaymentModal";
 
 // Styled-Components
 
@@ -42,6 +41,7 @@ const UserIdentifier = styled.p`
   padding: 0;
 `;
 
+
 // interface IUser {
 //     id: number;
 //     name: string;
@@ -77,7 +77,7 @@ export default function UserList() {
                 ID: {user.id} - Username: {user.username}
               </UserIdentifier>
             </UserInfo>
-            <PaymentButton></PaymentButton>
+            <PaymentModal />
           </AccountWrapper>
         );
       })}

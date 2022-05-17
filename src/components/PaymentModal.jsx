@@ -1,16 +1,78 @@
-import React from "react"
-import ReactModal from "react-modal"
+import React, { useState } from "react";
+import Modal from "react-modal";
+import styled, {css} from "styled-components";
 
-export default function PaymentModal () {
+const Button = styled.button`
+  cursor: pointer;
 
-    return (
-        <ReactModal isOpen={true}>
-            <div className="Content">
-                Pagamento para nome do usuários
-                <input type="text" placeholder="R$ 0,00"></input>
-                <input type="text" placeholder="Cartão com final"></input>
-              </div>    
-        </ReactModal>
-    )
+  ${props => props.paymentButton && css`
+    margin-right: 0;
+  `}
 
+  ${props => props.closeButton && css`
+    float: right;
+    border: none;
+    color: white;
+    background-color: transparent;
+    font-size: 20px;
+  `}
+
+`;
+
+const ButtonDiv = styled.div`
+  width: 60px;
+  margin: 0 auto;
+`
+
+const PaymentHeader = styled.header`
+  background-color: #474A6E;
+  color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+`
+
+const PaymentInputSection = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const PaymentInput = styled.input`
+  margin-bottom: 5px;
+  height: 30px;
+  border-radius: 5px;
+`
+
+Modal.setAppElement("#root");
+
+export default function PaymentModal() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function toggleModal() {
+    setIsOpen(!isOpen);
+  }
+
+  return (
+    <div className="PaymentModal">
+
+      <Button paymentButton onClick={toggleModal}>Pagar</Button>
+
+      <Modal 
+        isOpen={isOpen}
+        onRequestClose={toggleModal}
+        contentLabel="My Payment Modal"
+      >
+        <div className="Content">
+          <Button closeButton onClick={toggleModal}>x</Button>
+          <PaymentHeader>Pagamento para nome do usuário</PaymentHeader>
+          <PaymentInputSection>
+            <PaymentInput type="text" placeholder="R$ 0,00"></PaymentInput>
+            <PaymentInput type="text" placeholder="Cartão com final"></PaymentInput>
+          </PaymentInputSection>
+          <ButtonDiv>
+           <Button>Pagar</Button>  
+          </ButtonDiv>
+        </div>
+      </Modal>
+    </div>
+  );
 }
