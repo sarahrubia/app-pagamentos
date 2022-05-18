@@ -77,7 +77,7 @@ export default function UserList() {
                 ID: {user.id} - Username: {user.username}
               </UserIdentifier>
             </UserInfo>
-            <PaymentModal />
+            <PaymentModal name={user.name}/>
           </AccountWrapper>
         );
       })}
