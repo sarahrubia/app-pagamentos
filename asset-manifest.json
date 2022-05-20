@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/app-pagamentos/static/js/main.c9641350.js",
+    "main.js": "/app-pagamentos/static/js/main.73e898ad.js",
     "static/js/787.098b39fb.chunk.js": "/app-pagamentos/static/js/787.098b39fb.chunk.js",
     "index.html": "/app-pagamentos/index.html",
-    "main.c9641350.js.map": "/app-pagamentos/static/js/main.c9641350.js.map",
+    "main.73e898ad.js.map": "/app-pagamentos/static/js/main.73e898ad.js.map",
     "787.098b39fb.chunk.js.map": "/app-pagamentos/static/js/787.098b39fb.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.c9641350.js"
+    "static/js/main.73e898ad.js"
   ]
 }
