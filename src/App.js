@@ -1,5 +1,6 @@
 import UserList from "./components/UserList";
-import PaymentModal from "./components/PaymentModal";
+// import PostForm from "./PostForm";
+
 
 function App() {
   return (
@@ -7,7 +8,7 @@ function App() {
       <div className="App">
         <header className="App-header"></header>
         <UserList />
-        <PaymentModal />
+        {/* <PostForm /> */}
       </div>
     </>
   );

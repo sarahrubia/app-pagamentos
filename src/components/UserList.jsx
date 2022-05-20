@@ -11,7 +11,6 @@ const Avatar = styled.img`
   border-radius: 50%;
 `;
 const AccountWrapper = styled.div`
-  width: 50%;
   margin: auto;
   display: flex;
   flex-direction: row;
@@ -41,26 +40,18 @@ const UserIdentifier = styled.p`
   padding: 0;
 `;
 
-
-// interface IUser {
-//     id: number;
-//     name: string;
-//     img: string;
-//     username: string;
-// }
-
 export default function UserList() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     axios
       .get("https://www.mocky.io/v2/5d531c4f2e0000620081ddce")
-      .then((res) => {
-        console.log(res);
-        setUsers(res.data);
+      .then((response) => {
+        console.log(response);
+        setUsers(response.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
   }, []);
 
@@ -68,7 +59,7 @@ export default function UserList() {
     <>
       {users.map((user) => {
         return (
-          <AccountWrapper>
+          <AccountWrapper key={user.id}>
             <Avatar className="Avatar" src={user.img} alt="" />
 
             <UserInfo className="UserInfo">
