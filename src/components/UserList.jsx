@@ -71,7 +71,8 @@ export default function UserList() {
             <PaymentModal name={user.name}/>
           </AccountWrapper>
         );
-      })}
+      })
+      }
     </>
   );
 }

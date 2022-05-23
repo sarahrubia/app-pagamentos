@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import styled, { css } from "styled-components";
-import PostForm from "../PostForm";
+// import PostForm from "../PostForm";
 
 const Button = styled.button`
   cursor: pointer;
@@ -68,6 +68,34 @@ export default function PaymentModal(props) {
     setIsOpen(!isOpen);
   };
 
+  const selectOptions = () => {
+    
+    let cards = [
+      // valid card
+      {
+        card_number: '1111111111111111',
+        cvv: 789,
+        expiry_date: '01/18',
+      },
+      // invalid card
+      {
+        card_number: '4111111111111234',
+        cvv: 123,
+        expiry_date: '01/20',
+      },
+    ];
+    
+    for (let i = 0; i < cards.length; i++) {
+      let selectCard = document.getElementById("selected");
+      let option = document.createElement("option");
+      let cardNumber = cards[i].card_number;
+      option.setAttribute("card_number", cardNumber);
+      option.textContent = "Cartão com final " + cardNumber.slice(cardNumber.length - 4);
+      selectCard.appendChild(option); 
+    }
+  }
+  
+
   return (
     <div className="PaymentModal">
       <Button paymentButton onClick={toggleModal}>
@@ -89,16 +117,16 @@ export default function PaymentModal(props) {
           <PaymentForm>
             <PaymentInput type="text" placeholder="R$ 0,00"></PaymentInput>
             <PaymentSelect 
-              id="selected"
-              placeholder="Cartão com final 1234">
+              id="selected">
+                {selectOptions()}
             </PaymentSelect>
           </PaymentForm>
           <ButtonDiv>
             <Button>Pagar</Button>
           </ButtonDiv>
-          <PostForm />
         </div>
       </Modal>
     </div>
+    
   );
 }

@@ -31,6 +31,34 @@ export default class PostForm extends Component {
 
 
   render() {
+
+    // let cards = [
+    //   // valid card
+    //   {
+    //     card_number: '1111111111111111',
+    //     cvv: 789,
+    //     expiry_date: '01/18',
+    //   },
+    //   // invalid card
+    //   {
+    //     card_number: '4111111111111234',
+    //     cvv: 123,
+    //     expiry_date: '01/20',
+    //   },
+    // ];
+    
+    // const selectCard = document.getElementById("selected");
+    
+    // for (let i = 0; i < cards.length; i++) {
+    //   const option = document.createElement("option");
+    //   option.setAttribute("card_number", cards[i].card_number);
+    //   option.textContent = cards[i].card_number;
+    //   selectCard.appendChild(option);
+    //   console.log(option);
+    // };
+    
+
+      // O <option> que devia ser gerado dentro do <select> aparece no console quando o modal já tá aberto. Mas se tiver fechado e clicar em pagar, ele nem abre, a página fica toda em branco.
     
     const { card_number, cvv, expiry_date } = this.state;
 
@@ -64,6 +92,7 @@ export default class PostForm extends Component {
           <button type="submit">Pagar</button>
         </form>
         <select id="selected">
+          <option value="default">default</option>
         </select>
       </>
     );
