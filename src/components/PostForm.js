@@ -31,8 +31,6 @@ export default class PostForm extends Component {
 
 
   render() {
-
-      // O <option> que devia ser gerado dentro do <select> aparece no console quando o modal já tá aberto. Mas se tiver fechado e clicar em pagar, ele nem abre, a página fica toda em branco.
     
     const { card_number, cvv, expiry_date } = this.state;
 

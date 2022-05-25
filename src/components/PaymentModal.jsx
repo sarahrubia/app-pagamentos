@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import styled, { css } from "styled-components";
+import IntlCurrencyInput from "react-intl-currency-input"
 // import axios from 'axios';
 
 const Button = styled.button`
@@ -71,23 +72,27 @@ export default function PaymentModal(props) {
   //   expiry_date: ""
   // });
 
-  const mask = (e) => {
-    e.preventDefault();
+  const currencyConfig = {
+    locale: "pt-BR",
+    formats: {
+      number: {
+        BRL: {
+          style: "currency",
+          currency: "BRL",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        },
+      },
+    },
+  };
 
-    if (/[0-9]+/g.test(e.key) && e.target.value.length < 14) {
-      e.target.value += e.key;
-    }
+  const handleChange = (event, value, maskedValue) => {
+    event.preventDefault();
 
-    let inputValue = Number(e.target.value.replace(/[^0-9]+/g, ""));
-    inputValue = inputValue / 100;
-    let inputFormat = inputValue.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-      minimumFractionDigits: 2,
-    });
+    console.log(value); // value without mask (ex: 1234.56)
+    console.log(maskedValue); // masked value (ex: R$1234,56)
+  };
 
-    e.target.value = inputFormat;
-  } 
 
   let cards = [
     // valid card
@@ -108,6 +113,11 @@ export default function PaymentModal(props) {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
+
+  // changeHandler = (e) => {
+  //   setPaymentInfo = 
+    
+  // }
 
   // submitHandler = e => {
   //     e.preventDefault()
@@ -141,10 +151,8 @@ export default function PaymentModal(props) {
             Pagamento para <PaymentHeaderUser>{props.name}</PaymentHeaderUser>
           </PaymentHeader>
           <PaymentForm>
-            <PaymentInput 
-              type="text" 
-              placeholder="R$ 0,00"
-              onKeyDown={mask} />
+            <IntlCurrencyInput currency="BRL" config={currencyConfig}
+            onChange={handleChange} />
             <PaymentSelect>
             {cards.map((card) => (
                 <option key={card.card_number}>Cartão com final {card.card_number.slice(-4)}</option>
