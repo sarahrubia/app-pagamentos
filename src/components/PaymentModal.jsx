@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import styled, { css } from "styled-components";
-import IntlCurrencyInput from "react-intl-currency-input"
-// import axios from 'axios';
+import IntlCurrencyInput from "react-intl-currency-input";
+import axios from 'axios';
 
 const Button = styled.button`
   cursor: pointer;
@@ -48,11 +48,11 @@ const PaymentForm = styled.form`
   flex-direction: column;
 `;
 
-const PaymentInput = styled.input`
-  margin-bottom: 5px;
-  height: 30px;
-  border-radius: 5px;
-`;
+// const PaymentInput = styled.input`
+//   margin-bottom: 5px;
+//   height: 30px;
+//   border-radius: 5px;
+// `;
 
 const PaymentSelect = styled.select`
   margin-bottom: 5px;
@@ -63,14 +63,15 @@ const PaymentSelect = styled.select`
 Modal.setAppElement("#root");
 
 export default function PaymentModal(props) {
+
+  //  Toggle Modal
   const [isOpen, setIsOpen] = useState(false);
-  // const [paymentInfo, setPaymentInfo] = useState({
-  //   destination_user_id: "",
-  //   payment_value: "",
-  //   card_number: "",
-  //   cvv: "",
-  //   expiry_date: ""
-  // });
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // Currency Mask
 
   const currencyConfig = {
     locale: "pt-BR",
@@ -86,51 +87,61 @@ export default function PaymentModal(props) {
     },
   };
 
-  const handleChange = (event, value, maskedValue) => {
-    event.preventDefault();
+  const handleChange = (e, value, maskedValue) => {
+    e.preventDefault();
 
     console.log(value); // value without mask (ex: 1234.56)
     console.log(maskedValue); // masked value (ex: R$1234,56)
   };
 
+  // Cards for Payment
 
   let cards = [
     // valid card
     {
-        card_number: "1111111111111111",
-        cvv: 789,
-        expiry_date: "01/18",
+      card_number: "1111111111111111",
+      cvv: 789,
+      expiry_date: "01/18",
     },
     // invalid card
     {
-        card_number: "4111111111111234",
-        cvv: 123,
-        expiry_date: "01/20",
+      card_number: "4111111111111234",
+      cvv: 123,
+      expiry_date: "01/20",
     },
-];
+  ];
 
+  // Post transactions
 
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
+  const [paymentInfo, setPaymentInfo] = useState({
+    destination_user_id: "",
+    payment_value: "",
+    card_number: "",
+    cvv: "",
+    expiry_date: "",
+  });
+
+  const changeHandler = (e) => {
+    setPaymentInfo({ [e.target.name]: e.target.value });
   };
 
-  // changeHandler = (e) => {
-  //   setPaymentInfo = 
-    
-  // }
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log(paymentInfo);
 
-  // submitHandler = e => {
-  //     e.preventDefault()
-  //     console.log(paymentInfo)
+    axios
+      .post(
+        "https://run.mocky.io/v3/533cd5d7-63d3-4488-bf8d-4bb8c751c989",
+        paymentInfo
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-  //     axios.post('https://run.mocky.io/v3/533cd5d7-63d3-4488-bf8d-4bb8c751c989', paymentInfo)
-  //       .then(response => {
-  //           console.log(response)
-  //       })
-  //       .catch(error => {
-  //           console.log(error)
-  //       })
-  // }
 
   return (
     <div className="PaymentModal">
@@ -150,21 +161,30 @@ export default function PaymentModal(props) {
           <PaymentHeader>
             Pagamento para <PaymentHeaderUser>{props.name}</PaymentHeaderUser>
           </PaymentHeader>
-          <PaymentForm>
-            <IntlCurrencyInput currency="BRL" config={currencyConfig}
-            onChange={handleChange} />
+          <PaymentForm onSubmit={submitHandler}>
+            <IntlCurrencyInput
+              currency="BRL"
+              config={currencyConfig}
+              onChange={handleChange}
+              name="payment_value"
+            />
             <PaymentSelect>
-            {cards.map((card) => (
-                <option key={card.card_number}>Cartão com final {card.card_number.slice(-4)}</option>
-            ))}
+              {cards.map((card) => (
+                <option
+                  key={card.card_number}
+                  name="card_number"
+                  onChange={changeHandler}
+                >
+                  Cartão com final {card.card_number.slice(-4)}
+                </option>
+              ))}
             </PaymentSelect>
           </PaymentForm>
           <ButtonDiv>
-            <Button>Pagar</Button>
+            <Button type="submit">Pagar</Button>
           </ButtonDiv>
         </div>
       </Modal>
     </div>
-    
   );
 }
