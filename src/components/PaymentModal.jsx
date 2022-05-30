@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import styled, { css } from "styled-components";
 import IntlCurrencyInput from "react-intl-currency-input";
-import axios from 'axios';
+import axios from "axios";
 
 const Button = styled.button`
   cursor: pointer;
@@ -63,35 +63,11 @@ const PaymentSelect = styled.select`
 Modal.setAppElement("#root");
 
 export default function PaymentModal(props) {
-
   //  Toggle Modal
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
-  };
-
-  // Currency Mask
-
-  const currencyConfig = {
-    locale: "pt-BR",
-    formats: {
-      number: {
-        BRL: {
-          style: "currency",
-          currency: "BRL",
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        },
-      },
-    },
-  };
-
-  const handleChange = (e, value, maskedValue) => {
-    e.preventDefault();
-
-    console.log(value); // value without mask (ex: 1234.56)
-    console.log(maskedValue); // masked value (ex: R$1234,56)
   };
 
   // Cards for Payment
@@ -111,28 +87,52 @@ export default function PaymentModal(props) {
     },
   ];
 
-  // Post transactions
-
-  const [paymentInfo, setPaymentInfo] = useState({
+  const [payment, setPayment] = useState({
     destination_user_id: "",
-    payment_value: "",
-    card_number: "",
-    cvv: "",
-    expiry_date: "",
+    paymentValue: 0,
+    cardInfo: {},
   });
 
-  const changeHandler = (e) => {
-    setPaymentInfo({ [e.target.name]: e.target.value });
+  // Currency Mask
+
+  const currencyConfig = {
+    locale: "pt-BR",
+    formats: {
+      number: {
+        BRL: {
+          style: "currency",
+          currency: "BRL",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        },
+      },
+    },
+  };
+
+  // Post transactions
+
+  const changeHandler = (e, currencyValue, maskedCurrencyValue) => {
+    e.preventDefault();
+
+    setPayment({
+      ...payment,
+      destination_user_id: props.id,
+      [e.target.name]: e.target.value,
+    });
+
+    console.log(currencyValue); // value without mask (ex: 1234.56)
+    console.log(maskedCurrencyValue); // value wit mask (ex: R$ 1234,56)
+
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(paymentInfo);
+    console.log(payment);
 
     axios
       .post(
         "https://run.mocky.io/v3/533cd5d7-63d3-4488-bf8d-4bb8c751c989",
-        paymentInfo
+        payment
       )
       .then((response) => {
         console.log(response);
@@ -141,7 +141,6 @@ export default function PaymentModal(props) {
         console.log(error);
       });
   };
-
 
   return (
     <div className="PaymentModal">
@@ -161,27 +160,28 @@ export default function PaymentModal(props) {
           <PaymentHeader>
             Pagamento para <PaymentHeaderUser>{props.name}</PaymentHeaderUser>
           </PaymentHeader>
-          <PaymentForm onSubmit={submitHandler}>
+          <PaymentForm>
             <IntlCurrencyInput
               currency="BRL"
               config={currencyConfig}
-              onChange={handleChange}
-              name="payment_value"
+              value={payment.paymentValue}
+              name="paymentValue"
+              onChange={changeHandler}
             />
-            <PaymentSelect>
+            <PaymentSelect
+              name="cardInfo"
+              value={payment.cardInfo}
+              onChange={changeHandler}
+            >
               {cards.map((card) => (
-                <option
-                  key={card.card_number}
-                  name="card_number"
-                  onChange={changeHandler}
-                >
+                <option key={card.card_number} value={JSON.stringify(card)}>
                   Cartão com final {card.card_number.slice(-4)}
                 </option>
               ))}
             </PaymentSelect>
           </PaymentForm>
           <ButtonDiv>
-            <Button type="submit">Pagar</Button>
+            <Button onClick={submitHandler}>Pagar</Button>
           </ButtonDiv>
         </div>
       </Modal>
