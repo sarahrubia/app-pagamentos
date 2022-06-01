@@ -3,6 +3,8 @@ import Modal from "react-modal";
 import styled, { css } from "styled-components";
 import axios from "axios";
 
+// Styled Components
+
 const Button = styled.button`
   cursor: pointer;
 
@@ -59,6 +61,8 @@ const PaymentSelect = styled.select`
   border-radius: 5px;
 `;
 
+// Modal
+
 Modal.setAppElement("#root");
 
 export default function PaymentModal(props) {
@@ -66,6 +70,7 @@ export default function PaymentModal(props) {
   const [userID, setUserID] = useState("");
   const [paymentValue, setPaymentValue] = useState("R$ 0,00");
   const [cardInfo, setCardInfo] = useState({});
+  const [paymentValueFloat, setPaymentValueFloat] = useState(0);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -104,11 +109,10 @@ export default function PaymentModal(props) {
       minimumFractionDigits: 2,
     });
 
-    console.log(formatInput);
-
     e.target.value = formatInput;
 
     setPaymentValue(formatInput);
+    setPaymentValueFloat(myInput)
     setUserID(props.id);
   };
 
@@ -116,7 +120,7 @@ export default function PaymentModal(props) {
 
   const POSTObject = {
     userID,
-    paymentValue,
+    paymentValueFloat,
     cardInfo,
   };
 
