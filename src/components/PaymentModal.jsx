@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import styled, { css } from "styled-components";
-import IntlCurrencyInput from "react-intl-currency-input";
 import axios from "axios";
 
 const Button = styled.button`
@@ -48,11 +47,11 @@ const PaymentForm = styled.form`
   flex-direction: column;
 `;
 
-// const PaymentInput = styled.input`
-//   margin-bottom: 5px;
-//   height: 30px;
-//   border-radius: 5px;
-// `;
+const PaymentInput = styled.input`
+  margin-bottom: 5px;
+  height: 30px;
+  border-radius: 5px;
+`;
 
 const PaymentSelect = styled.select`
   margin-bottom: 5px;
@@ -63,8 +62,10 @@ const PaymentSelect = styled.select`
 Modal.setAppElement("#root");
 
 export default function PaymentModal(props) {
-  //  Toggle Modal
   const [isOpen, setIsOpen] = useState(false);
+  const [userID, setUserID] = useState("");
+  const [paymentValue, setPaymentValue] = useState("R$ 0,00");
+  const [cardInfo, setCardInfo] = useState({});
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -87,52 +88,46 @@ export default function PaymentModal(props) {
     },
   ];
 
-  const [payment, setPayment] = useState({
-    destination_user_id: "",
-    paymentValue: 0,
-    cardInfo: {},
-  });
-
   // Currency Mask
 
-  const currencyConfig = {
-    locale: "pt-BR",
-    formats: {
-      number: {
-        BRL: {
-          style: "currency",
-          currency: "BRL",
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        },
-      },
-    },
+  const currencyMask = (e) => {
+    e.preventDefault();
+
+    if (/[0-9]+/g.test(e.key) && e.target.value.length < 14) {
+      e.target.value += e.key;
+    }
+
+    var myInput = Number(e.target.value.replace(/[^0-9]+/g, "") / 100);
+    var formatInput = myInput.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      minimumFractionDigits: 2,
+    });
+
+    console.log(formatInput);
+
+    e.target.value = formatInput;
+
+    setPaymentValue(formatInput);
+    setUserID(props.id);
   };
 
   // Post transactions
 
-  const changeHandler = (e, currencyValue, maskedCurrencyValue) => {
-    e.preventDefault();
-
-    setPayment({
-      ...payment,
-      destination_user_id: props.id,
-      [e.target.name]: e.target.value,
-    });
-
-    console.log(currencyValue); // value without mask (ex: 1234.56)
-    console.log(maskedCurrencyValue); // value wit mask (ex: R$ 1234,56)
-
+  const POSTObject = {
+    userID,
+    paymentValue,
+    cardInfo,
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(payment);
+    console.log(POSTObject);
 
     axios
       .post(
         "https://run.mocky.io/v3/533cd5d7-63d3-4488-bf8d-4bb8c751c989",
-        payment
+        POSTObject
       )
       .then((response) => {
         console.log(response);
@@ -161,17 +156,18 @@ export default function PaymentModal(props) {
             Pagamento para <PaymentHeaderUser>{props.name}</PaymentHeaderUser>
           </PaymentHeader>
           <PaymentForm>
-            <IntlCurrencyInput
-              currency="BRL"
-              config={currencyConfig}
-              value={payment.paymentValue}
+            <PaymentInput
+              value={paymentValue}
               name="paymentValue"
-              onChange={changeHandler}
+              onChange={currencyMask}
             />
             <PaymentSelect
               name="cardInfo"
-              value={payment.cardInfo}
-              onChange={changeHandler}
+              value={cardInfo}
+              onChange={(e) => {
+                e.preventDefault();
+                setCardInfo(e.target.value);
+              }}
             >
               {cards.map((card) => (
                 <option key={card.card_number} value={JSON.stringify(card)}>
