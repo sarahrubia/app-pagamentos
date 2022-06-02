@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import PaymentModal from "./PaymentModal";
-// import LoginForm from "./PostForm";
 
 // Styled-Components
 
@@ -70,7 +69,6 @@ export default function UserList() {
               </UserIdentifier>
             </UserInfo>
             <PaymentModal name={user.name} id={user.id}/>
-            {/* <LoginForm /> */}
           </AccountWrapper>
         );
       })

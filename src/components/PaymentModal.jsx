@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import styled, { css } from "styled-components";
 import axios from "axios";
+import ConfirmationModal from "./ConfirmationModal";
 
 // Styled Components
 
@@ -71,6 +72,7 @@ export default function PaymentModal(props) {
   const [paymentValue, setPaymentValue] = useState("R$ 0,00");
   const [cardInfo, setCardInfo] = useState({});
   const [paymentValueFloat, setPaymentValueFloat] = useState(0);
+  // const [show, setShow] = useState(false);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -135,6 +137,13 @@ export default function PaymentModal(props) {
       )
       .then((response) => {
         console.log(response);
+        if (response.data.status === "Aprovada") {
+          alert("Sucesso na transação");
+          // setShow(true);
+
+        } else if (response.data.status !== "Aprovada") {
+          alert("Erro na transação");
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -159,7 +168,7 @@ export default function PaymentModal(props) {
           <PaymentHeader>
             Pagamento para <PaymentHeaderUser>{props.name}</PaymentHeaderUser>
           </PaymentHeader>
-          <PaymentForm>
+          <PaymentForm onSubmit={submitHandler}>
             <PaymentInput
               value={paymentValue}
               name="paymentValue"
@@ -179,12 +188,13 @@ export default function PaymentModal(props) {
                 </option>
               ))}
             </PaymentSelect>
+            <ButtonDiv>
+              <Button type="submit">Pagar</Button>
+            </ButtonDiv>
           </PaymentForm>
-          <ButtonDiv>
-            <Button onClick={submitHandler}>Pagar</Button>
-          </ButtonDiv>
         </div>
       </Modal>
+      <ConfirmationModal />
     </div>
   );
 }
