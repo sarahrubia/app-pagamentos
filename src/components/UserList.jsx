@@ -1,55 +1,8 @@
 import React, { useState, useEffect } from "react";
-import styled, { css } from "styled-components";
+import "../components/UserList.css"
 import axios from "axios";
 import PaymentModal from "./PaymentModal";
 import ConfirmationModal from "./ConfirmationModal";
-
-// Styled-Components
-
-const Avatar = styled.img`
-  width: 100%;
-  max-width: 100px;
-  border-radius: 50%;
-`;
-const AccountWrapper = styled.div`
-  margin: auto;
-  display: flex;
-  flex-direction: row;
-  padding: 20px 40px;
-  align-items: center;
-  background-image: linear-gradient(to bottom right, #2e3148, #2a2c3f);
-  font-family: Helvetica;
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
-  border-bottom: 1px solid white;
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-
-  ${(props) =>
-    props.paymentButton &&
-    css`
-      margin-right: 0;
-    `}
-`;
-
-const UserInfoName = styled.p`
-  margin: 0;
-`;
-
-const UserInfo = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-`;
-
-const UserIdentifier = styled.p`
-  margin: 0;
-  padding: 0;
-`;
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -82,16 +35,16 @@ export default function UserList() {
     <>
       {users.map((user) => {
         return (
-          <AccountWrapper key={user.id}>
-            <Avatar className="Avatar" src={user.img} alt="" />
-            <UserInfo className="UserInfo">
-              <UserInfoName className="UserInfo-name">{user.name}</UserInfoName>
-              <UserIdentifier className="UserIdentifier">
+          <div className="AccountWrapper" key={user.id}>
+            <img className="Avatar" src={user.img} alt="" />
+            <div className="UserInfo">
+              <p className="UserInfoName">{user.name}</p>
+              <p className="UserIdentifier">
                 ID: {user.id} - Username: {user.username}
-              </UserIdentifier>
-            </UserInfo>
-            <Button onClick={() => handleOpenModal(user)}>Pagar</Button>
-          </AccountWrapper>
+              </p>
+            </div>
+            <button className="PaymentButton" onClick={() => handleOpenModal(user)}>Pagar</button>
+          </div>
         );
       })}
       {selectedUser.id && <PaymentModal

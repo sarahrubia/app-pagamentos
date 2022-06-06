@@ -1,73 +1,13 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import styled, { css } from "styled-components";
+import "../components/PaymentModal.css"
 import axios from "axios";
-import ConfirmationModal from "./ConfirmationModal";
-// import ConfirmationModal from "./ConfirmationModal";
-
-// Styled Components
-
-const Button = styled.button`
-  cursor: pointer;
-
-  ${(props) =>
-    props.paymentButton &&
-    css`
-      margin-right: 0;
-    `}
-
-  ${(props) =>
-    props.closeButton &&
-    css`
-      float: right;
-      padding-top: 10px;
-      padding-right: 15px;
-      border: none;
-      color: white;
-      background-color: transparent;
-      font-size: 20px;
-    `}
-`;
-
-const ButtonDiv = styled.div`
-  width: 60px;
-  margin: 0 auto;
-`;
-
-const PaymentHeader = styled.header`
-  background-color: #474a6e;
-  color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  margin-bottom: 5px;
-`;
-
-const PaymentHeaderUser = styled.span`
-  color: yellow;
-`;
-
-const PaymentForm = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const PaymentInput = styled.input`
-  margin-bottom: 5px;
-  height: 30px;
-  border-radius: 5px;
-`;
-
-const PaymentSelect = styled.select`
-  margin-bottom: 5px;
-  height: 30px;
-  border-radius: 5px;
-`;
 
 // Modal
 
 Modal.setAppElement("#root");
 
-export default function PaymentModal(props, handleCloseModal) {
+export default function PaymentModal(props) {
   // const [isOpen, setIsOpen] = useState(false);
   const [userID, setUserID] = useState("");
   const [paymentValue, setPaymentValue] = useState("R$ 0,00");
@@ -157,19 +97,21 @@ export default function PaymentModal(props, handleCloseModal) {
         contentLabel="My Payment Modal"
       >
         <div className="Content">
-          <Button closeButton onClick={props.onRequestClose}>
+          <button className="CloseButton" onClick={props.onRequestClose}>
             x
-          </Button>
-          <PaymentHeader>
-            Pagamento para <PaymentHeaderUser>{props.name}</PaymentHeaderUser>
-          </PaymentHeader>
-          <PaymentForm onSubmit={submitHandler}>
-            <PaymentInput
+          </button>
+          <header className="PaymentHeader">
+            Pagamento para <span>{props.name}</span>
+          </header>
+          <form className="PaymentForm" onSubmit={submitHandler}>
+            <input
+              className="PaymentInput"
               value={paymentValue}
               name="paymentValue"
               onChange={currencyMask}
-            />
-            <PaymentSelect
+          />
+            <select
+              className="PaymentSelect"
               name="cardInfo"
               value={cardInfo}
               onChange={(e) => {
@@ -182,14 +124,13 @@ export default function PaymentModal(props, handleCloseModal) {
                   Cartão com final {card.card_number.slice(-4)}
                 </option>
               ))}
-            </PaymentSelect>
-            <ButtonDiv>
-              <Button type="submit">Pagar</Button>
-            </ButtonDiv>
-          </PaymentForm>
+            </select>
+            <div className="ButtonDiv">
+              <button type="submit">Pagar</button>
+            </div>
+          </form>
         </div>
       </Modal>
-      <ConfirmationModal setMessage={props.setMessage} />
       </>
   );
 }
