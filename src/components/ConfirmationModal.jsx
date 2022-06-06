@@ -15,6 +15,16 @@ const ConfirmationMessage = styled.p`
     font-size: 18px;
 `;
 
+const CloseButton = styled.button`
+  float: right;
+  padding-top: 10px;
+  padding-right: 15px;
+  border: none;
+  color: white;
+  background-color: transparent;
+  font-size: 20px;
+}`
+
 Modal.setAppElement("#root");
 
 export default function ConfirmationModal(props) {
@@ -26,6 +36,9 @@ export default function ConfirmationModal(props) {
         onRequestClose={props.onRequestClose}
         contentLabel="My Confirmation Modal"
       >
+          <CloseButton onClick={props.onRequestClose}>
+            x
+          </CloseButton>
           <PaymentHeader>
             Recibo de Pagamento
           </PaymentHeader>

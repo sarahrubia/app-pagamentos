@@ -8,7 +8,6 @@ import axios from "axios";
 Modal.setAppElement("#root");
 
 export default function PaymentModal(props) {
-  // const [isOpen, setIsOpen] = useState(false);
   const [userID, setUserID] = useState("");
   const [paymentValue, setPaymentValue] = useState("R$ 0,00");
   const [cardInfo, setCardInfo] = useState({});
@@ -96,39 +95,43 @@ export default function PaymentModal(props) {
         onRequestClose={props.onRequestClose}
         contentLabel="My Payment Modal"
       >
-        <div className="Content">
+        <div>
           <button className="CloseButton" onClick={props.onRequestClose}>
             x
           </button>
           <header className="PaymentHeader">
             Pagamento para <span>{props.name}</span>
           </header>
-          <form className="PaymentForm" onSubmit={submitHandler}>
-            <input
-              className="PaymentInput"
-              value={paymentValue}
-              name="paymentValue"
-              onChange={currencyMask}
-          />
-            <select
-              className="PaymentSelect"
-              name="cardInfo"
-              value={cardInfo}
-              onChange={(e) => {
-                e.preventDefault();
-                setCardInfo(e.target.value);
-              }}
-            >
-              {cards.map((card) => (
-                <option key={card.card_number} value={JSON.stringify(card)}>
-                  Cartão com final {card.card_number.slice(-4)}
-                </option>
-              ))}
-            </select>
-            <div className="ButtonDiv">
-              <button type="submit">Pagar</button>
-            </div>
-          </form>
+          { props.setUser ? 
+            <form className="PaymentForm" onSubmit={submitHandler}>
+              <input
+                className="PaymentInput"
+                value={paymentValue}
+                name="paymentValue"
+                onChange={currencyMask}
+            />
+              <select
+                className="PaymentSelect"
+                name="cardInfo"
+                value={cardInfo}
+                onChange={(e) => {
+                  e.preventDefault();
+                  setCardInfo(e.target.value);
+                }}
+              >
+                {cards.map((card) => (
+                  <option key={card.card_number} value={JSON.stringify(card)}>
+                    Cartão com final {card.card_number.slice(-4)}
+                  </option>
+                ))}
+              </select>
+              <div className="ButtonDiv">
+                <button type="submit">Pagar</button>
+              </div>
+            </form>
+            : 
+            <p>Pagamento realizado com sucesso! </p>
+            }
         </div>
       </Modal>
       </>
