@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../components/UserList.css"
 import axios from "axios";
 import PaymentModal from "./PaymentModal";
-import ConfirmationModal from "./ConfirmationModal";
+// import ConfirmationModal from "./ConfirmationModal";
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -57,12 +57,12 @@ export default function UserList() {
           message={message}
         />
       }
-      {message && !selectedUser.id &&
+      {/* {message && !selectedUser.id &&
         <ConfirmationModal 
           isOpen={modalIsOpen} 
           onRequestClose={handleCloseModal} 
           setMessage={setMessage} />
-      }
+      } */}
     </>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import "../components/PaymentModal.css"
+import "../components/PaymentModal.css";
 import axios from "axios";
 
 // Modal
@@ -49,7 +49,7 @@ export default function PaymentModal(props) {
     e.target.value = formatInput;
 
     setPaymentValue(formatInput);
-    setPaymentValueFloat(myInput)
+    setPaymentValueFloat(myInput);
     setUserID(props.id);
   };
 
@@ -74,13 +74,12 @@ export default function PaymentModal(props) {
         console.log(response);
         if (response.data.status === "Aprovada") {
           // alert("Sucesso na transação");
-          props.setUser({})
-          props.setMessage("O pagamento foi concluído com sucesso!")
-
+          props.setUser({});
+          props.setMessage("O pagamento foi concluído com sucesso!");
         } else if (response.data.status !== "Aprovada") {
           // alert("Erro na transação");
-          props.setUser({})
-          props.setMessage("O pagamento não foi concluído com sucesso")
+          props.setUser({});
+          props.setMessage("O pagamento não foi concluído com sucesso");
         }
       })
       .catch((error) => {
@@ -102,14 +101,14 @@ export default function PaymentModal(props) {
           <header className="PaymentHeader">
             Pagamento para <span>{props.name}</span>
           </header>
-          { props.setUser ? 
+          {props.setUser ? (
             <form className="PaymentForm" onSubmit={submitHandler}>
               <input
                 className="PaymentInput"
                 value={paymentValue}
                 name="paymentValue"
                 onChange={currencyMask}
-            />
+              />
               <select
                 className="PaymentSelect"
                 name="cardInfo"
@@ -129,11 +128,16 @@ export default function PaymentModal(props) {
                 <button type="submit">Pagar</button>
               </div>
             </form>
-            : 
-            <p>Pagamento realizado com sucesso! </p>
-            }
+          ) : (
+            <>
+              <header className="PaymentHeader">
+                Recibo de Pagamento
+              </header>
+              <p> {props.message} </p>
+            </>
+          )}
         </div>
       </Modal>
-      </>
+    </>
   );
 }
