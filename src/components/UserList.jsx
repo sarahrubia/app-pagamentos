@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import axios from "axios";
 import PaymentModal from "./PaymentModal";
+import ConfirmationModal from "./ConfirmationModal";
 
 // Styled-Components
 
@@ -24,6 +25,16 @@ const AccountWrapper = styled.div`
   border-bottom: 1px solid white;
 `;
 
+const Button = styled.button`
+  cursor: pointer;
+
+  ${(props) =>
+    props.paymentButton &&
+    css`
+      margin-right: 0;
+    `}
+`;
+
 const UserInfoName = styled.p`
   margin: 0;
 `;
@@ -42,6 +53,17 @@ const UserIdentifier = styled.p`
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState({});
+  const [message, setMessage] = useState("");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  function handleOpenModal() {
+    setModalIsOpen(true);
+  }
+
+  function handleCloseModal() {
+    setModalIsOpen(false);
+  }
 
   useEffect(() => {
     axios
@@ -61,18 +83,37 @@ export default function UserList() {
         return (
           <AccountWrapper key={user.id}>
             <Avatar className="Avatar" src={user.img} alt="" />
-
             <UserInfo className="UserInfo">
               <UserInfoName className="UserInfo-name">{user.name}</UserInfoName>
               <UserIdentifier className="UserIdentifier">
                 ID: {user.id} - Username: {user.username}
               </UserIdentifier>
             </UserInfo>
-            <PaymentModal name={user.name} id={user.id}/>
+            <Button onClick={handleOpenModal}>Pagar</Button>
           </AccountWrapper>
         );
-      })
+      })}
+      {selectedUser.id &&
+        <PaymentModal
+          isOpen={modalIsOpen}
+          onRequestClose={handleCloseModal}
+          name={selectedUser.name}
+          id={selectedUser.id}
+          setMessage={setMessage}
+          setUser={setSelectedUser}
+        />
+      }
+      {message && !selectedUser.id &&
+        <ConfirmationModal setMessage={setMessage} />
       }
     </>
   );
 }
+
+// Colocar o PaymentModal fora do AccountWrapper
+//  Setar selectedUser pra poder pegar os dados do usuário, name e id
+// Colocar botão Pagar dentro do UserInfo
+//  {selectedUser && <PaymentModal name={selectedUser.name} id={selectedUser.id}/>}
+// Setar message
+//  {message && !selectedUser && <ConfirmationModal setMessage={message} />} ???
+// Fazendo dessa forma, quando o usuário não estiver selecionado, o modal de pagamento fecha, e o modal do recibo vai aparecer.

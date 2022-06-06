@@ -17,11 +17,13 @@ const ConfirmationMessage = styled.p`
 
 Modal.setAppElement("#root");
 
-export default function ConfirmationModal() {
+export default function ConfirmationModal(props) {
 
   return (
     <div className="ConfirmationModal">
       <Modal
+        isOpen={props.isOpen}
+        onRequestClose={props.toggleModal}
         contentLabel="My Confirmation Modal"
       >
           <PaymentHeader>

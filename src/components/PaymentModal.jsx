@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import styled, { css } from "styled-components";
 import axios from "axios";
-import ConfirmationModal from "./ConfirmationModal";
+// import ConfirmationModal from "./ConfirmationModal";
 
 // Styled Components
 
@@ -66,17 +66,12 @@ const PaymentSelect = styled.select`
 
 Modal.setAppElement("#root");
 
-export default function PaymentModal(props) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function PaymentModal(props, handleCloseModal) {
+  // const [isOpen, setIsOpen] = useState(false);
   const [userID, setUserID] = useState("");
   const [paymentValue, setPaymentValue] = useState("R$ 0,00");
   const [cardInfo, setCardInfo] = useState({});
   const [paymentValueFloat, setPaymentValueFloat] = useState(0);
-  // const [show, setShow] = useState(false);
-
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
 
   // Cards for Payment
 
@@ -139,7 +134,8 @@ export default function PaymentModal(props) {
         console.log(response);
         if (response.data.status === "Aprovada") {
           alert("Sucesso na transação");
-          // setShow(true);
+          props.setSelectedUser({})
+          props.setMessage("Transação feita com sucesso")
 
         } else if (response.data.status !== "Aprovada") {
           alert("Erro na transação");
@@ -151,18 +147,13 @@ export default function PaymentModal(props) {
   };
 
   return (
-    <div className="PaymentModal">
-      <Button paymentButton onClick={toggleModal}>
-        Pagar
-      </Button>
-
       <Modal
-        isOpen={isOpen}
-        onRequestClose={toggleModal}
+        isOpen={props.modalIsOpen}
+        onRequestClose={e => handleCloseModal(e)}
         contentLabel="My Payment Modal"
       >
         <div className="Content">
-          <Button closeButton onClick={toggleModal}>
+          <Button closeButton onClick={e => handleCloseModal(e)}>
             x
           </Button>
           <PaymentHeader>
@@ -194,7 +185,5 @@ export default function PaymentModal(props) {
           </PaymentForm>
         </div>
       </Modal>
-      <ConfirmationModal />
-    </div>
   );
 }
