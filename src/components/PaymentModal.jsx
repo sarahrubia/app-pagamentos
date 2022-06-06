@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import styled, { css } from "styled-components";
 import axios from "axios";
+import ConfirmationModal from "./ConfirmationModal";
 // import ConfirmationModal from "./ConfirmationModal";
 
 // Styled Components
@@ -133,12 +134,14 @@ export default function PaymentModal(props, handleCloseModal) {
       .then((response) => {
         console.log(response);
         if (response.data.status === "Aprovada") {
-          alert("Sucesso na transação");
-          props.setSelectedUser({})
-          props.setMessage("Transação feita com sucesso")
+          // alert("Sucesso na transação");
+          props.setUser({})
+          props.setMessage("O pagamento foi concluído com sucesso!")
 
         } else if (response.data.status !== "Aprovada") {
-          alert("Erro na transação");
+          // alert("Erro na transação");
+          props.setUser({})
+          props.setMessage("O pagamento não foi concluído com sucesso")
         }
       })
       .catch((error) => {
@@ -147,13 +150,14 @@ export default function PaymentModal(props, handleCloseModal) {
   };
 
   return (
+    <>
       <Modal
-        isOpen={props.modalIsOpen}
-        onRequestClose={e => handleCloseModal(e)}
+        isOpen={props.isOpen}
+        onRequestClose={props.onRequestClose}
         contentLabel="My Payment Modal"
       >
         <div className="Content">
-          <Button closeButton onClick={e => handleCloseModal(e)}>
+          <Button closeButton onClick={props.onRequestClose}>
             x
           </Button>
           <PaymentHeader>
@@ -185,5 +189,7 @@ export default function PaymentModal(props, handleCloseModal) {
           </PaymentForm>
         </div>
       </Modal>
+      <ConfirmationModal setMessage={props.setMessage} />
+      </>
   );
 }

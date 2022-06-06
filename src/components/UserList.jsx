@@ -57,8 +57,9 @@ export default function UserList() {
   const [message, setMessage] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  function handleOpenModal() {
+  function handleOpenModal(user) {
     setModalIsOpen(true);
+    setSelectedUser(user)
   }
 
   function handleCloseModal() {
@@ -89,12 +90,11 @@ export default function UserList() {
                 ID: {user.id} - Username: {user.username}
               </UserIdentifier>
             </UserInfo>
-            <Button onClick={handleOpenModal}>Pagar</Button>
+            <Button onClick={() => handleOpenModal(user)}>Pagar</Button>
           </AccountWrapper>
         );
       })}
-      {selectedUser.id &&
-        <PaymentModal
+      {selectedUser.id && <PaymentModal
           isOpen={modalIsOpen}
           onRequestClose={handleCloseModal}
           name={selectedUser.name}
@@ -104,16 +104,11 @@ export default function UserList() {
         />
       }
       {message && !selectedUser.id &&
-        <ConfirmationModal setMessage={setMessage} />
+        <ConfirmationModal 
+          isOpen={modalIsOpen} 
+          onRequestClose={handleCloseModal} 
+          setMessage={setMessage} />
       }
     </>
   );
 }
-
-// Colocar o PaymentModal fora do AccountWrapper
-//  Setar selectedUser pra poder pegar os dados do usuário, name e id
-// Colocar botão Pagar dentro do UserInfo
-//  {selectedUser && <PaymentModal name={selectedUser.name} id={selectedUser.id}/>}
-// Setar message
-//  {message && !selectedUser && <ConfirmationModal setMessage={message} />} ???
-// Fazendo dessa forma, quando o usuário não estiver selecionado, o modal de pagamento fecha, e o modal do recibo vai aparecer.

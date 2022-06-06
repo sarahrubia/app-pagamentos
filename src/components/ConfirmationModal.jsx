@@ -23,14 +23,14 @@ export default function ConfirmationModal(props) {
     <div className="ConfirmationModal">
       <Modal
         isOpen={props.isOpen}
-        onRequestClose={props.toggleModal}
+        onRequestClose={props.onRequestClose}
         contentLabel="My Confirmation Modal"
       >
           <PaymentHeader>
             Recibo de Pagamento
           </PaymentHeader>
           <ConfirmationMessage>
-            O pagamento foi concluído com sucesso.
+            Pagamento realizado com sucesso!
           </ConfirmationMessage>
       </Modal>
     </div>
