@@ -59,7 +59,7 @@ export default function PaymentModal(props) {
     setUserID(props.selectedUser.id);
   };
 
-  // Post transactions
+  // Post transaction
 
   const POSTObject = {
     userID,
@@ -80,10 +80,8 @@ export default function PaymentModal(props) {
         console.log(response);
         if (response.data.status === "Aprovada") {
           props.setMessage("O pagamento foi concluído com sucesso!");
-          props.setUser({})
         } else if (response.data.status !== "Aprovada") {
           props.setMessage("O pagamento não foi concluído com sucesso");
-          props.setUser({})
         }
       })
       .catch((error) => {
@@ -116,12 +114,15 @@ export default function PaymentModal(props) {
             <select
               className="PaymentSelect"
               name="cardInfo"
-              value={cardInfo}
+              // value={cardInfo}
+              defaultValue={"default"}
               onChange={(e) => {
-                e.preventDefault();
                 setCardInfo(e.target.value);
               }}
             >
+                <option value={"default"} disabled>
+                  Escolha um cartão para o pagamento
+                </option>
               {cards.map((card) => (
                 <option key={card.card_number} value={JSON.stringify(card)}>
                   Cartão com final {card.card_number.slice(-4)}
