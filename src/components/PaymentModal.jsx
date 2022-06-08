@@ -1,17 +1,23 @@
 import React, { useState } from "react";
-// import Modal from "react-modal";
 import "../components/PaymentModal.css";
 import axios from "axios";
 
 // Modal
-
-// Modal.setAppElement("#root");
 
 export default function PaymentModal(props) {
   const [userID, setUserID] = useState("");
   const [paymentValue, setPaymentValue] = useState("R$ 0,00");
   const [cardInfo, setCardInfo] = useState({});
   const [paymentValueFloat, setPaymentValueFloat] = useState(0);
+
+  const handleOutsideClick = (e) => {
+    if (e.target.id === "modal") props.isClosed(false);
+  };
+
+  const handleResetModal = (e) => {
+    props.isClosed(false);
+    props.setMessage("") 
+  }
 
   // Cards for Payment
 
@@ -50,7 +56,7 @@ export default function PaymentModal(props) {
 
     setPaymentValue(formatInput);
     setPaymentValueFloat(myInput);
-    setUserID(props.id);
+    setUserID(props.selectedUser.id);
   };
 
   // Post transactions
@@ -60,10 +66,6 @@ export default function PaymentModal(props) {
     paymentValueFloat,
     cardInfo,
   };
-
-  const handleOutsideClick = (e) => {
-    if(e.target.id === "modal") props.isClosed(false)
-  }
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -78,8 +80,10 @@ export default function PaymentModal(props) {
         console.log(response);
         if (response.data.status === "Aprovada") {
           props.setMessage("O pagamento foi concluído com sucesso!");
+          props.setUser({})
         } else if (response.data.status !== "Aprovada") {
           props.setMessage("O pagamento não foi concluído com sucesso");
+          props.setUser({})
         }
       })
       .catch((error) => {
@@ -89,61 +93,63 @@ export default function PaymentModal(props) {
 
   return (
     <div className="ModalBackground" id="modal" onClick={handleOutsideClick}>
-      {/* Ver a condição se é message, setMessage ou o que diferencia o PaymentModal do ConfirmationModal */}
-      { props.setMessage !== null ? 
-      (<div className="ModalContainer">
-        <div className="HeaderDiv">
-          <header className="PaymentHeader">
-            Pagamento para <span>{props.name}</span>
-          </header>
-          <button className="CloseButton" onClick={() => props.isClosed(false)}>
-            &times;
-          </button>
-        </div>
-        <form 
-          className="PaymentForm" 
-          onSubmit={submitHandler}
-        >
-          <input
-            className="PaymentInput"
-            value={paymentValue}
-            name="paymentValue"
-            onChange={currencyMask}
-          />
-          <select
-            className="PaymentSelect"
-            name="cardInfo"
-            value={cardInfo}
-            onChange={(e) => {
-              e.preventDefault();
-              setCardInfo(e.target.value);
-            }}
-          >
-            {cards.map((card) => (
-              <option key={card.card_number} value={JSON.stringify(card)}>
-                Cartão com final {card.card_number.slice(-4)}
-              </option>
-            ))}
-          </select>
-          <div className="ButtonDiv">
-            <button type="submit">
-              Pagar
+      {props.message === "" ? (
+        <div className="ModalContainer">
+          <div className="HeaderDiv">
+            <header className="PaymentHeader">
+              Pagamento para <span>{props.name}</span>
+            </header>
+            <button
+              className="CloseButton"
+              onClick={() => props.isClosed(false)}
+            >
+              &times;
             </button>
           </div>
-        </form>
-      </div>)
-      : 
-     (<div className="ModalContainer">
-        <div className="HeaderDiv">
-          <header className="PaymentHeader">
-            Pagamento para <span>{props.name}</span>
-          </header>
-          <button className="CloseButton" onClick={() => props.isClosed(false)}>
-            &times;
-          </button>
+          <form className="PaymentForm" onSubmit={submitHandler}>
+            <input
+              className="PaymentInput"
+              value={paymentValue}
+              name="paymentValue"
+              onChange={currencyMask}
+            />
+            <select
+              className="PaymentSelect"
+              name="cardInfo"
+              value={cardInfo}
+              onChange={(e) => {
+                e.preventDefault();
+                setCardInfo(e.target.value);
+              }}
+            >
+              {cards.map((card) => (
+                <option key={card.card_number} value={JSON.stringify(card)}>
+                  Cartão com final {card.card_number.slice(-4)}
+                </option>
+              ))}
+            </select>
+            <div className="ButtonDiv">
+              <button type="submit">Pagar</button>
+            </div>
+          </form>
         </div>
-        <p>{props.message}</p>
-      </div>
-      )};
+      ) : (
+        <div className="ModalContainer">
+          <div className="HeaderDiv">
+            <header className="PaymentHeader">
+              Recibo de Pagamento
+            </header>
+            <button
+              className="CloseButton"
+              onClick={handleResetModal}
+            >
+              &times;
+            </button>
+          </div>
+          <p>{props.message}</p>
+        </div>
+      )}
+      ;
     </div>
-  )}
+  );
+}
