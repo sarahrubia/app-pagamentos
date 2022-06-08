@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Modal from "react-modal";
+// import Modal from "react-modal";
 import "../components/PaymentModal.css";
 import axios from "axios";
 
 // Modal
 
-Modal.setAppElement("#root");
+// Modal.setAppElement("#root");
 
 export default function PaymentModal(props) {
   const [userID, setUserID] = useState("");
@@ -61,6 +61,10 @@ export default function PaymentModal(props) {
     cardInfo,
   };
 
+  const handleOutsideClick = (e) => {
+    if(e.target.id === "modal") props.isClosed(false)
+  }
+
   const submitHandler = (e) => {
     e.preventDefault();
     console.log(POSTObject);
@@ -84,49 +88,50 @@ export default function PaymentModal(props) {
   };
 
   return (
-    <>
-      <Modal
-        isOpen={props.isOpen}
-        onRequestClose={props.onRequestClose}
-      >
-        <div>
-          <button className="CloseButton" onClick={props.onRequestClose}>
-            &times;
-          </button>
+    <div className="ModalBackground" id="modal" onClick={handleOutsideClick}>
+      <div className="ModalContainer">
+        <div className="HeaderDiv">
           <header className="PaymentHeader">
             Pagamento para <span>{props.name}</span>
           </header>
-            <form 
-              className="PaymentForm" 
-              onSubmit={submitHandler}
-            >
-              <input
-                className="PaymentInput"
-                value={paymentValue}
-                name="paymentValue"
-                onChange={currencyMask}
-              />
-              <select
-                className="PaymentSelect"
-                name="cardInfo"
-                value={cardInfo}
-                onChange={(e) => {
-                  e.preventDefault();
-                  setCardInfo(e.target.value);
-                }}
-              >
-                {cards.map((card) => (
-                  <option key={card.card_number} value={JSON.stringify(card)}>
-                    Cartão com final {card.card_number.slice(-4)}
-                  </option>
-                ))}
-              </select>
-              <div className="ButtonDiv">
-                <button type="submit">Pagar</button>
-              </div>
-            </form>
+          <button className="CloseButton" onClick={() => props.isClosed(false)}>
+            &times;
+          </button>
         </div>
-      </Modal>
-    </>
+        <form 
+          className="PaymentForm" 
+          onSubmit={submitHandler}
+        >
+          <input
+            className="PaymentInput"
+            value={paymentValue}
+            name="paymentValue"
+            onChange={currencyMask}
+          />
+          <select
+            className="PaymentSelect"
+            name="cardInfo"
+            value={cardInfo}
+            onChange={(e) => {
+              e.preventDefault();
+              setCardInfo(e.target.value);
+            }}
+          >
+            {cards.map((card) => (
+              <option key={card.card_number} value={JSON.stringify(card)}>
+                Cartão com final {card.card_number.slice(-4)}
+              </option>
+            ))}
+          </select>
+          <div className="ButtonDiv">
+            <button type="submit">
+              Pagar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
+
+// Ver como fazer pra fechar quando clicar fora do modal

@@ -2,23 +2,23 @@ import React, { useState, useEffect } from "react";
 import "../components/UserList.css"
 import axios from "axios";
 import PaymentModal from "./PaymentModal";
-import ConfirmationModal from "./ConfirmationModal";
+// import ConfirmationModal from "./ConfirmationModal";
 
 export default function UserList() {
   
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState({});
   const [message, setMessage] = useState("");
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [toggleModal, setToggleModal] = useState(false);
 
   function handleOpenModal(user) {
-    setModalIsOpen(true);
+    setToggleModal(true);
     setSelectedUser(user)
   }
 
-  function handleCloseModal() {
-    setModalIsOpen(false);
-  }
+  // function handleCloseModal() {
+  //   setModalIsOpen(false);
+  // }
 
   useEffect(() => {
     axios
@@ -44,20 +44,21 @@ export default function UserList() {
                 ID: {user.id} - Username: {user.username}
               </p>
             </div>
-            <button className="PaymentButton" onClick={() => handleOpenModal(user)}>Pagar</button>
+            <button className="PaymentButton" onClick={() => handleOpenModal(user)}>
+              Pagar
+            </button>
           </div>
         );
       })}
-      {selectedUser.id && <PaymentModal
-          isOpen={modalIsOpen}
-          onRequestClose={handleCloseModal}
+      {toggleModal && selectedUser.id && <PaymentModal
+          isClosed={setToggleModal}
           name={selectedUser.name}
           setMessage={setMessage}
           setUser={setSelectedUser}
           message={message}
         />
       }
-      {message &&
+      {/* {message &&
         <ConfirmationModal 
           isOpen={modalIsOpen} 
           onRequestClose={handleCloseModal} 
@@ -66,7 +67,7 @@ export default function UserList() {
           selectedUser={selectedUser}
           message={message}
         />
-      }
+      } */}
     </>
   );
 }
