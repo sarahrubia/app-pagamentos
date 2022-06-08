@@ -89,7 +89,9 @@ export default function PaymentModal(props) {
 
   return (
     <div className="ModalBackground" id="modal" onClick={handleOutsideClick}>
-      <div className="ModalContainer">
+      {/* Ver a condição se é message, setMessage ou o que diferencia o PaymentModal do ConfirmationModal */}
+      { props.setMessage !== null ? 
+      (<div className="ModalContainer">
         <div className="HeaderDiv">
           <header className="PaymentHeader">
             Pagamento para <span>{props.name}</span>
@@ -129,9 +131,19 @@ export default function PaymentModal(props) {
             </button>
           </div>
         </form>
+      </div>)
+      : 
+     (<div className="ModalContainer">
+        <div className="HeaderDiv">
+          <header className="PaymentHeader">
+            Pagamento para <span>{props.name}</span>
+          </header>
+          <button className="CloseButton" onClick={() => props.isClosed(false)}>
+            &times;
+          </button>
+        </div>
+        <p>{props.message}</p>
       </div>
+      )};
     </div>
-  );
-}
-
-// Ver como fazer pra fechar quando clicar fora do modal
+  )}
