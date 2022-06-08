@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import "../components/UserList.css"
 import axios from "axios";
 import PaymentModal from "./PaymentModal";
-// import ConfirmationModal from "./ConfirmationModal";
+import ConfirmationModal from "./ConfirmationModal";
 
 export default function UserList() {
+  
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState({});
   const [message, setMessage] = useState("");
@@ -51,18 +52,21 @@ export default function UserList() {
           isOpen={modalIsOpen}
           onRequestClose={handleCloseModal}
           name={selectedUser.name}
-          id={selectedUser.id}
           setMessage={setMessage}
           setUser={setSelectedUser}
           message={message}
         />
       }
-      {/* {message && !selectedUser.id &&
+      {message &&
         <ConfirmationModal 
           isOpen={modalIsOpen} 
           onRequestClose={handleCloseModal} 
-          setMessage={setMessage} />
-      } */}
+          // setMessage={setMessage}
+          setUser={setSelectedUser} 
+          selectedUser={selectedUser}
+          message={message}
+        />
+      }
     </>
   );
 }

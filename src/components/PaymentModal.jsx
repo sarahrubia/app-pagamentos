@@ -73,12 +73,8 @@ export default function PaymentModal(props) {
       .then((response) => {
         console.log(response);
         if (response.data.status === "Aprovada") {
-          // alert("Sucesso na transação");
-          props.setUser({});
           props.setMessage("O pagamento foi concluído com sucesso!");
         } else if (response.data.status !== "Aprovada") {
-          // alert("Erro na transação");
-          props.setUser({});
           props.setMessage("O pagamento não foi concluído com sucesso");
         }
       })
@@ -92,17 +88,18 @@ export default function PaymentModal(props) {
       <Modal
         isOpen={props.isOpen}
         onRequestClose={props.onRequestClose}
-        contentLabel="My Payment Modal"
       >
         <div>
           <button className="CloseButton" onClick={props.onRequestClose}>
-            x
+            &times;
           </button>
           <header className="PaymentHeader">
             Pagamento para <span>{props.name}</span>
           </header>
-          {props.setUser ? (
-            <form className="PaymentForm" onSubmit={submitHandler}>
+            <form 
+              className="PaymentForm" 
+              onSubmit={submitHandler}
+            >
               <input
                 className="PaymentInput"
                 value={paymentValue}
@@ -128,14 +125,6 @@ export default function PaymentModal(props) {
                 <button type="submit">Pagar</button>
               </div>
             </form>
-          ) : (
-            <>
-              <header className="PaymentHeader">
-                Recibo de Pagamento
-              </header>
-              <p> {props.message} </p>
-            </>
-          )}
         </div>
       </Modal>
     </>

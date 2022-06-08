@@ -1,0 +1,22 @@
+.PaymentHeader {
+  background-color: #474a6e;
+  color: #fff;
+  font-weight: 500;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.ConfirmationMessage {
+    font-size: 18px;
+}
+
+.CloseButton {
+  float: right;
+  padding-top: 10px;
+  padding-right: 15px;
+  border: none;
+  color: white;
+  background-color: transparent;
+  font-size: 20px;
+}
